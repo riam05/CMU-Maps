@@ -7,7 +7,7 @@ try:
         json_data = json.load(file)
         print("JSON data loaded successfully!")
 except FileNotFoundError:
-    print(f"Error: File '{json_file_path}' not found.")
+    print(f"Error: File '{json_file_path}' not found.") 
     exit(1)
 except json.JSONDecodeError as e:
     print(f"Error: Failed to decode JSON. Check the file format.\n{e}")
