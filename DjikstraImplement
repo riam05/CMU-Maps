@@ -2,7 +2,7 @@ import heapq
 import json
 
 # Load JSON data
-with open('wean_hall copy.json') as file:
+with open('wean_hall_expanded_1.json') as file:
     data = json.load(file)
 
 # Build adjacency list
@@ -44,8 +44,8 @@ def dijkstra(start_id, goal_id):
     return None, float('inf')  # No path found
 
 # Example usage
-start_id = "stair"
-goal_id = "4105"
+start_id = "4301"
+goal_id = "4301"
 
 path, distance = dijkstra(start_id, goal_id)
 if path:
