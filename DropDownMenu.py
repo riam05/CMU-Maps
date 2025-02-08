@@ -1,23 +1,75 @@
-import tkinter as tk
-from tkinter import ttk
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wean Hall Path Finder</title>
+</head>
+<body>
+    <h2>Select Your Starting Room</h2>
+    
+    <!-- Dropdown Menu -->
+    <select id="startRoom">
+        <option disabled selected>-- Select a Room --</option>
+        <option value="4301">4301</option>
+        <option value="4303">4303</option>
+        <option value="4302">4302</option>
+        <option value="4305">4305</option>
+        <option value="4307">4307</option>
+        <option value="4309">4309</option>
+        <option value="4310">4310</option>
+        <option value="4352">4352</option>
+        <option value="4311">4311</option>
+        <option value="4313">4313</option>
+        <option value="4314">4314</option>
+        <option value="4315">4315</option>
+        <option value="4317">4317</option>
+        <option value="4319">4319</option>
+        <option value="4318">4318</option>
+        <option value="4322">4322</option>
+        <option value="4354">4354</option>
+        <option value="4321">4321</option>
+        <option value="4323">4323</option>
+        <option value="4325">4325</option>
+        <option value="4326">4326</option>
+        <option value="4356">4356</option>
+        <option value="4342">4342</option>
+        <option value="4338">4338</option>
+        <option value="4340">4340</option>
+        <option value="4342">4342</option>
+        <option value="4432">4432</option>
+        <option value="4435">4435</option>
+        <option value="4436">4436</option>
+        <option value="4501">4501</option>
+        <option value="4503">4503</option>
+        <option value="4504">4504</option>
+        <option value="4505">4505</option>
+        <option value="4602">4602</option>
+        <option value="4604">4604</option>
+        <option value="4605">4605</option>
+        <option value="4606">4606</option>
+        <option value="4607">4607</option>
+        <option value="4608">4608</option>
+        <option value="4609">4609</option>
+        <option value="4610">4610</option>
+        <option value="4612">4612</option>
+        <option value="4611">4611</option>
+        <option value="4614">4614</option>
+        <option value="4616">4616</option>
+        <option value="4701">4701</option>
+        <option value="4701A">4701A</option>
+        <option value="4702">4702</option>
+        <option value="4703">4703</option>
+    </select>
 
-TK_SILENCE_DEPRECATION=1
-# Sample list of rooms
-rooms = ["4301", "4303", "4302", "4305", "4307", "4309", "4310", "4352", "4311", "4313", "4314", "4315", "4317", "4319", "4318", "4322", "4354", "4321", "4323", "4325", "4326", "4356", "4342", "4338", "4340", "4342", "4432", "4435", "4436", "4501", "4503", "4504", "4505", "4602", "4604", "4605", "4606", "4607", "4608", "4609", "4610", "4612", "4611", "4614", "4616", "4701", "4701A", "4702", "4703"]
+    <!-- Button -->
+    <button onclick="submitSelection()">Find Path</button>
 
-def on_select(event):
-    selected_room = dropdown_var.get()
-    print(f"Selected starting room: {selected_room}")
-
-# Create window
-root = tk.Tk()
-root.title("Wean Hall Path Finder")
-
-# Dropdown menu
-dropdown_var = tk.StringVar()
-dropdown = ttk.Combobox(root, textvariable=dropdown_var, values=rooms)
-dropdown.pack(pady=20)
-dropdown.bind("<<ComboboxSelected>>", on_select)
-
-# Run GUI
-root.mainloop()
+    <script>
+        function submitSelection() {
+            const selectedRoom = document.getElementById("startRoom").value;
+            alert("You selected room: " + selectedRoom);
+        }
+    </script>
+</body>
+</html>
