@@ -4,39 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wean Hall Path Finder</title>
-    <script>
-        function submitSelection() {
-            const startRoom = document.getElementById("startRoom").value;
-            
-            if (!startRoom) {
-                alert("Please select a starting room!");
-                return;
-            }
-
-            fetch('/find_paths', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ start: startRoom })
-            })
-            .then(response => response.json())
-            .then(data => {
-                let resultDiv = document.getElementById("result");
-                resultDiv.innerHTML = "<h3>Shortest Paths:</h3>";
-                
-                for (const [destination, pathInfo] of Object.entries(data.paths)) {
-                    resultDiv.innerHTML += `<p><strong>To ${destination}:</strong> ${pathInfo.path.join(" → ")} (Distance: ${pathInfo.distance})</p>`;
-                }
-            })
-            .catch(error => {
-                console.error("Error:", error);
-                alert("An error occurred while fetching paths.");
-            });
-        }
-    </script>
 </head>
 <body>
-    <h2>Select Your Starting Room</h2>
-
+    <h2>Select Your Destination</h2>
+    
     <!-- Dropdown Menu -->
     <select id="startRoom">
         <option disabled selected>-- Select a Room --</option>
@@ -93,6 +64,20 @@
     <!-- Button -->
     <button onclick="submitSelection()">Find Path</button>
 
-    <div id="result"></div>
+    <!-- Result Display -->
+    <div id="result" style="margin-top: 20px; font-weight: bold;"></div>
+
+    <script>
+        function submitSelection() {
+            const selectedRoom = document.getElementById("startRoom").value;
+            let resultDiv = document.getElementById("result");
+
+            if (selectedRoom === "4501") {
+                resultDiv.innerHTML = "Turn right, in 10 seconds check right.";
+            } else {
+                resultDiv.innerHTML = `You selected room: ${selectedRoom}`;
+            }
+        }
+    </script>
 </body>
 </html>
