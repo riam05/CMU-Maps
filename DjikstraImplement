@@ -45,7 +45,7 @@ def dijkstra(start_id, goal_id):
 
 # Example usage
 start_id = "4301"
-goal_id = "4701A"
+goal_id = "4701A"      
 
 path, distance = dijkstra(start_id, goal_id)
 if path:

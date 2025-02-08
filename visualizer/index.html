@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Path Visualization</title>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.min.js",
+                "GLTFLoader": "https://cdn.jsdelivr.net/npm/three@0.128/examples/jsm/loaders/GLTFLoader.js"
+            }
+        }
+    </script>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <script type="module">
+        import * as THREE from 'three';
+        import { GLTFLoader } from 'GLTFLoader';
+
+        // Scene, Camera, Renderer
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Load 3D Polycam Model
+        const loader = new GLTFLoader();
+        loader.load('hallway_model.glb', function (gltf) {
+            scene.add(gltf.scene);
+        }, undefined, function (error) {
+            console.error('Error loading model:', error);
+        });
+
+        // Define Nodes (Manually Place These in Your Hallway Model)
+        const nodes = {
+            "4301": { position: [0, 0, 0] },
+            "H3_0": { position: [2, 0, 0] },
+            "H0_H3": { position: [4, 0, 0] },
+            "H0_1": { position: [6, 0, 0] },
+            "H0_0": { position: [8, 0, 0] },
+            "H0_H5": { position: [10, 0, 0] },
+            "H5_0": { position: [12, 0, 0] },
+            "H5_1": { position: [14, 0, 0] },
+            "H5_2": { position: [16, 0, 0] },
+            "H5_67": { position: [18, 0, 0] },
+            "H7_0": { position: [20, 0, 0] },
+            "4701": { position: [22, 0, 0] },
+            "4701A": { position: [24, 0, 0] }
+        };
+
+        // Render Nodes as Small Spheres in the Scene
+        Object.entries(nodes).forEach(([id, data]) => {
+            const geometry = new THREE.SphereGeometry(0.3, 16, 16);
+            const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+            const sphere = new THREE.Mesh(geometry, material);
+            sphere.position.set(...data.position);
+            scene.add(sphere);
+        });
+
+        // Function to Highlight Path
+        function highlightPath(path) {
+            path.forEach((nodeId, index) => {
+                if (index < path.length - 1) {
+                    const source = nodes[nodeId];
+                    const target = nodes[path[index + 1]];
+
+                    if (!source || !target) return;
+
+                    const material = new THREE.LineBasicMaterial({ color: 0xffff00 }); // Highlight Color
+                    const points = [
+                        new THREE.Vector3(...source.position),
+                        new THREE.Vector3(...target.position)
+                    ];
+                    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+                    const line = new THREE.Line(geometry, material);
+                    scene.add(line);
+                }
+            });
+        }
+
+        // Example Path Input (Can be dynamically updated)
+        const inputPath = ["4301", "H3_0", "H0_H3", "H0_1", "H0_0", "H0_H5", "H5_0", "H5_1", "H5_2", "H5_67", "H7_0", "4701", "4701A"];
+        highlightPath(inputPath);
+
+        // Camera Positioning
+        camera.position.set(12, 8, 30);
+        camera.lookAt(new THREE.Vector3(12, 0, 0));
+
+        // Animation Loop
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
+        animate();
+    </script>
+</body>
+</html>
