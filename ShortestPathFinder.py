@@ -1,54 +1,37 @@
-import heapq
 import json
-import math
+import heapq
 
-# Load JSON data
-with open('wean_hall.json') as file:
-    data = json.load(file)
+def dijkstra(graph, start):
+    queue = [(0, start)]
+    distances = {node: float('inf') for node in graph}
+    distances[start] = 0
+    visited = set()
 
-nodes = {node['id']: (node['x'], node['y']) for node in data['nodes']}
-edges = { (edge['source'], edge['target']): edge['weight'] for edge in data['edges']}
+    while queue:
+        (dist, current_node) = heapq.heappop(queue)
+        if current_node in visited:
+            continue
+        visited.add(current_node)
 
-# Heuristic function: Euclidean distance
-def heuristic(node1, node2):
-    x1, y1 = nodes[node1]
-    x2, y2 = nodes[node2]
-    return math.sqrt((x1 - x2)**2 + (y1 - y2)**2)
+        for neighbor, weight in graph[current_node].items():
+            distance = dist + weight
+            if distance < distances[neighbor]:
+                distances[neighbor] = distance
+                heapq.heappush(queue, (distance, neighbor))
+    
+    return distances
 
-# A* Algorithm
-def a_star(start, goal):
-    open_set = []
-    heapq.heappush(open_set, (0, start))
-    came_from = {}
-    g_score = {node: float('inf') for node in nodes}
-    g_score[start] = 0
-    f_score = {node: float('inf') for node in nodes}
-    f_score[start] = heuristic(start, goal)
+# Load JSON data from file
+with open('wean_hall.json', 'r') as f:
+    graph_data = json.load(f)
 
-    while open_set:
-        current = heapq.heappop(open_set)[1]
-
-        if current == goal:
-            path = []
-            while current in came_from:
-                path.append(current)
-                current = came_from[current]
-            path.append(start)
-            return path[::-1]
-
-        for (source, target), weight in edges.items():
-            if source == current:
-                tentative_g_score = g_score[current] + weight
-                if tentative_g_score < g_score[target]:
-                    came_from[target] = current
-                    g_score[target] = tentative_g_score
-                    f_score[target] = g_score[target] + heuristic(target, goal)
-                    heapq.heappush(open_set, (f_score[target], target))
-
-    return None
+# Create graph
+graph = {node['id']: {} for node in graph_data['nodes']}
+for edge in graph_data['edges']:
+    graph[edge['source']][edge['target']] = edge['weight']
+    graph[edge['target']][edge['source']] = edge['weight']  # Ensure bidirectional pathways
 
 # Example usage
-start_node = 4
-goal_node = 7
-path = a_star(start_node, goal_node)
-print("Shortest path from node", start_node, "to node", goal_node, ":", path)
+start_node = 0
+distances = dijkstra(graph, start_node)
+print(f"Shortest distances from node {start_node}: {distances}")
