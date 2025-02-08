@@ -34,4 +34,4 @@ for edge in graph_data['edges']:
 # Example: Find shortest distances from node 0
 start_node = 0
 distances = dijkstra(graph, start_node)
-print(f"Shortest distances from node {start_node}: {distances}")
+print("Shortest distances from node {start_node}: {distances}")
